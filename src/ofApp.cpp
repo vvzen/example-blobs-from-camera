@@ -1,5 +1,4 @@
 #include "ofApp.h"
-#include <iostream>
 
 //--------------------------------------------------------------
 void ofApp::setup(){
