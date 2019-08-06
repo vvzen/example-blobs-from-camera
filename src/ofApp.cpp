@@ -35,7 +35,8 @@ void ofApp::update(){
         if (GUI_dilate) ofxCv::dilate(threshold_image);
         if (GUI_erode) ofxCv::erode(threshold_image);
         
-        ofxCv::invert(threshold_image);
+        // If you need to, you can invert the image
+        // ofxCv::invert(threshold_image);
         
         // Apply the threshold filter
         ofxCv::threshold(threshold_image, GUI_threshold);
