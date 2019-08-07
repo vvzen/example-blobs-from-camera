@@ -2,7 +2,8 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+    
+    // This is the image we'll use to detect the blobs
     threshold_image.allocate(640, 480, OF_IMAGE_GRAYSCALE);
     
     // CAMERA
@@ -27,7 +28,8 @@ void ofApp::update(){
     
     if(cam.isFrameNew()) {
         
-        // Make the camera BW
+        // Save the webcam frame into the threshold image
+        // and make it grayscale
         ofxCv::convertColor(cam, threshold_image, CV_RGB2GRAY);
         
         // These three filters help to reduce the noise
@@ -42,7 +44,7 @@ void ofApp::update(){
         ofxCv::threshold(threshold_image, GUI_threshold);
         threshold_image.update();
         
-        // Contour finder
+        // the contour finder is used to find the blobs
         contour_finder.setMinArea(GUI_min_area);
         contour_finder.setMaxArea(GUI_max_area);
         contour_finder.setThreshold(GUI_threshold);
