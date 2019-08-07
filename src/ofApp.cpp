@@ -63,30 +63,39 @@ void ofApp::draw(){
     ofPushStyle();
     ofNoFill();
     ofColor blob_color;
+    blob_color.set(255, 255, 255);
     
     // If we've found any blobs, draw them
     if (contour_finder.getBoundingRects().size() > 0){
-        int i = 0;
+        
         for (cv::Rect rect: contour_finder.getBoundingRects()){
             
+            if (ofGetMousePressed()){
             
-            // You could use these numbers in order to check if the mouse is nearby a blob
-//            ofLogNotice() << "x: " << rect.x << ", y: " << rect.y << ", width: " << rect.width << ", " << rect.height;
-            
-            // When we click on a blob
-            if (ofGetMousePressed() && rect.contains(cv::Point2d(ofGetMouseX(), ofGetMouseY()))){
-                blob_color.set(0, 255, 0);
-                detected_blobs.push_back(ofRectangle(rect.x, rect.y, rect.width, rect.height));
-            }
-            else {
-                blob_color.set(255, 255, 255);
+                int previous_size = detected_blobs.size();
+                ofLogNotice() << "previous size: " << previous_size;
+                
+                // You could use these numbers in order to check if the mouse is nearby a blob
+                //            ofLogNotice() << "x: " << rect.x << ", y: " << rect.y << ", width: " << rect.width << ", " << rect.height;
+                
+                // When we click on a blob
+                if (rect.contains(cv::Point2d(ofGetMouseX(), ofGetMouseY()))){
+                    
+                    blob_color.set(0, 255, 0);
+                    
+                    ofLogNotice() << "adding blob";
+                    
+                    // After we find a blob, you need to press f to find another one again
+                    if (find_next){
+                        detected_blobs.push_back(ofRectangle(rect.x, rect.y, rect.width, rect.height));
+                        find_next = false;
+                    }
+                }
             }
             
             ofSetColor(blob_color);
             ofDrawRectangle(rect.x, rect.y, rect.width, rect.height);
-            i++;
         }
-        
     }
     ofPopStyle();
     
@@ -94,9 +103,13 @@ void ofApp::draw(){
     ofNoFill();
     
     // Draw all the blobs we've already detected
+    int c = 0;
+    ofDrawBitmapStringHighlight("Num of detected blobs: " + ofToString(detected_blobs.size()), 640, 40);
     for (ofRectangle blob: detected_blobs){
         ofSetColor(0, 0, 255);
+        ofDrawBitmapString("blob " + ofToString(c), blob.x, blob.y);
         ofDrawRectangle(blob);
+        c++;
     }
     
     ofPopStyle();
@@ -111,6 +124,10 @@ void ofApp::keyPressed(int key){
     switch (key){
         case 'i':
             show_GUI = !show_GUI;
+            break;
+            
+        case 'f':
+            find_next = true;
             break;
     }
 }

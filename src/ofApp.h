@@ -21,6 +21,7 @@ class ofApp : public ofBaseApp{
         vector<ofRectangle> detected_blobs;
     
         bool show_GUI = true;
+        bool find_next = true;
         ofxPanel gui;
         ofParameter<float> GUI_min_area, GUI_max_area, GUI_threshold, GUI_blur;
         ofParameter<bool> GUI_show_holes, GUI_erode, GUI_dilate;
