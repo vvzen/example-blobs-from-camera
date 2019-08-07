@@ -65,9 +65,10 @@ void ofApp::draw(){
     ofColor blob_color;
     blob_color.set(255, 255, 255);
     
-    // If we've found any blobs, draw them
+    // If we've found any blobs
     if (contour_finder.getBoundingRects().size() > 0){
         
+        // Loop through each blob
         for (cv::Rect rect: contour_finder.getBoundingRects()){
             
             if (ofGetMousePressed()){
@@ -85,7 +86,8 @@ void ofApp::draw(){
                     
                     ofLogNotice() << "adding blob";
                     
-                    // After we find a blob, you need to press f to find another one again
+                    // After we find a blob, we add it to the detected_blobs
+                    // You will need to press f again to find another one
                     if (find_next){
                         detected_blobs.push_back(ofRectangle(rect.x, rect.y, rect.width, rect.height));
                         find_next = false;
@@ -93,6 +95,7 @@ void ofApp::draw(){
                 }
             }
             
+            // Draw the current blobs
             ofSetColor(blob_color);
             ofDrawRectangle(rect.x, rect.y, rect.width, rect.height);
         }
@@ -106,6 +109,7 @@ void ofApp::draw(){
     int c = 0;
     ofDrawBitmapStringHighlight("Num of detected blobs: " + ofToString(detected_blobs.size()), 640, 40);
     for (ofRectangle blob: detected_blobs){
+        
         ofSetColor(0, 0, 255);
         ofDrawBitmapString("blob " + ofToString(c), blob.x, blob.y);
         ofDrawRectangle(blob);
